@@ -89,13 +89,15 @@ int32_t PID_calc(PIDInstance *pid, int32_t ref, int32_t set);
   * @retval         none
   */
 extern void PID_clear(PIDInstance *pid); 
-
+extern float translate();
+extern float processAngle();
 /**
   * @brief          6020角度pid过零处理
   * @param          tar为目标值，cur为现在的返还值
   * @retval         none
   */
 extern int32_t Handle_Angle8191_PID_Over_Zero(int32_t *tar, uint16_t *cur);
+
 
 
 #endif

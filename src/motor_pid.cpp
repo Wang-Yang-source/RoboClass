@@ -1,5 +1,5 @@
 #include "motor_pid.h"
-
+#include <Arduino.h>
 void  LimitMax(int32_t *input,int32_t max)   
     {                          
         if (*input > max)       
@@ -106,4 +106,29 @@ int32_t Handle_Angle8191_PID_Over_Zero(int32_t *tar, uint16_t *cur)
 		*cur = *cur - 8192;
 	}
 	return *cur;
+}
+
+float translate() {
+  int angle = 0;
+  if (Serial.available() > 0) {
+    String receivedData = Serial.readStringUntil('\n'); // 读取直到换行符的传入数据
+    angle = receivedData.toFloat(); // 将接收到的数据转换为浮点数
+  }
+  return angle;
+}
+
+float processAngle() {
+  float angle = translate(); // 调用translate函数获取角度
+  int transl = 0;
+  if (angle > 10) {
+    transl = 100;
+    Serial.println("右转");
+  } else if (angle < -10) {
+    transl = -100;
+    Serial.println("左转");
+  } else {
+    transl = 0;
+    Serial.println("运行");
+  }
+  return transl;
 }

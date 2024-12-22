@@ -3,8 +3,8 @@
 
 #include "motor_pid.h"
 #include <Arduino.h>
-#define Wheel_spacing     0.11f   // 22cm 半宽
-#define Wheel_axlespacing 0.09f   // 18cm 半长
+#define Wheel_spacing     1.1f   // 22cm 半宽
+#define Wheel_axlespacing 0.9f   // 18cm 半长
 
 struct Chassis_target
 {

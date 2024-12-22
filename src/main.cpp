@@ -3,8 +3,7 @@
 #include <ultra.h>
 #include "motor_pid.h"
 #include "chassis.h"
-#include <translate.h>
-/**********************************************************/
+/******************* variable && constants  *******************************/
 
 /**************************超声波**************************/
 /*  -----------               | y轴           ----------- */
@@ -54,16 +53,14 @@ void cleanup()
 
 void loop() 
 {
-  double vx = 100.0, vy = 0.0, vz = 0.0;
-  vz=translate();
-
-  // 驱动电机
+  double vx = 200.0, vy = 0.0, vz = 0.0;
+  vz = translate()*100;
+  vy = processAngle();
   Drive_Motor(vx ,vy ,vz);
+  // 驱动电机
 
   // 发送电机速度指令
   chassis_transmit(chassis_target.clds, chassis_target.clus, chassis_target.crus, chassis_target.crds);
 
-  // 延时一段时间
-  delay(1000);
   // 你的循环代码
 }

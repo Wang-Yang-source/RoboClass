@@ -49,13 +49,32 @@ void chassis_transmit(float clds,float clus,float crus,float crds)
   sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 6, (int)(1500 + round(clus)), 0);  // 电机6前进
   Serial.println(cmd_return_tmp); 
 
-  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 7, (int)(1500 - round(crus)), 0);  // 电机7前进 
+  int flag = 1;
+   if(clds < 0)
+  {
+    flag = 1;
+  }
+    if(clds > 0)
+  {
+    flag = -1;
+  }
+
+  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 7, (int)(1500 + (round)(flag*(abs(clds)-3))), 0);  // 电机7前进 
   Serial.println(cmd_return_tmp);
 
   sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 8, (int)(1500 + round(clds)), 0);  // 电机8前进 
   Serial.println(cmd_return_tmp);
 
-  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 9, (int)(1500 - round(crds)), 0);  // 电机9前进
+  int flag2 = 1;
+   if(crds < 0)
+  {
+    flag2 = -1;
+  }
+    if(crds > 0)
+  {
+    flag2 = 1;
+  }
+  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 9, (int)(1500 - (round)(flag2*(abs(crds)-60))), 0);  // 电机9前进
   Serial.println(cmd_return_tmp);
 }
 
@@ -71,7 +90,7 @@ void Chassis_xunji_control(void)
   
   // 驱动电机，设置速度
   // Drive_Motor(500, chassis_target.vy, chassis_target.vz);
-  Drive_Motor(500, chassis_target.vy, 0);
+  Drive_Motor(300, chassis_target.vy, 0);
   
   // 发送电机速度指令
   chassis_transmit(chassis_target.clds, chassis_target.clus, chassis_target.crus, chassis_target.crds);
