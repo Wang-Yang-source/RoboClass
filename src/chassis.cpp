@@ -74,7 +74,7 @@ void chassis_transmit(float clds,float clus,float crus,float crds)
   {
     flag2 = 1;
   }
-  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 9, (int)(1500 - (round)(flag2*(abs(crds)-60))), 0);  // 电机9前进
+  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 9, (int)(1500 - (round)(flag2*(abs(crds)-0))), 0);  // 电机9前进
   Serial.println(cmd_return_tmp);
 }
 

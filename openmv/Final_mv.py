@@ -83,21 +83,25 @@ while True:
         Deflection_Angle = 0  # 需要将线心Center_Pos转换为偏角 偏角初始化为0
         Deflection_Angle = -math.atan((Center_Pos - 80) / 60)  # 计算偏角 限制输出为正负53.13°
         Deflection_Angle = math.degrees(Deflection_Angle)  # 弧度值转换为角度
+        # 计算质心到画面中心的距离
+        Distance_to_Center = Center_Pos - 80
+        uart.write("Distance: %f\n" % Distance_to_Center)  # 发送质心到画面中心的距离
+        print("Distance: %f\n" % Distance_to_Center)
+
         # 当偏角大于偏角阈值 且小于最大偏角 通信 小车左转
         Angle_err = Deflection_Angle
         if abs(Deflection_Angle) > TRA_AngTH:
             if Deflection_Angle > 0:
-                uart.write("%f\n" % Deflection_Angle)  # 发送左转和角度信息
-
+                uart.write("Turn Angle: %f" % Deflection_Angle)  # 发送左转和角度信息
                 print("Right")  # 用于程序终端调试
                 print("Turn Angle: %f" % Deflection_Angle)
             if Deflection_Angle < 0:
-                uart.write("%f\n" % Deflection_Angle)  # 发送左转和角度信息
+                uart.write("Turn Angle: %f" % Deflection_Angle)  # 发送左转和角度信息
                 print("Left")  # 用于程序终端调试
                 print("Turn Angle: %f" % Deflection_Angle)
 
         # 当小车角度绝对值小于阈值
         if abs(Deflection_Angle) <= TRA_AngTH:
-            uart.write("%f\n" % Deflection_Angle)  # 发送左转和角度信息
+            uart.write("Turn Angle: %f" % Deflection_Angle)  # 发送左转和角度信息
             print("Run")  # 用于程序终端调试
             print("Turn Angle: %f" % Deflection_Angle)
