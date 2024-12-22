@@ -87,17 +87,17 @@ while True:
         Angle_err = Deflection_Angle
         if abs(Deflection_Angle) > TRA_AngTH:
             if Deflection_Angle > 0:
-                uart.write("Right, Angle: %f\n" % Deflection_Angle)  # 发送左转和角度信息
+                uart.write("%f\n" % Deflection_Angle)  # 发送左转和角度信息
 
                 print("Right")  # 用于程序终端调试
                 print("Turn Angle: %f" % Deflection_Angle)
             if Deflection_Angle < 0:
-                uart.write("Left, Angle: %f\n" % Deflection_Angle)  # 发送左转和角度信息
+                uart.write("%f\n" % Deflection_Angle)  # 发送左转和角度信息
                 print("Left")  # 用于程序终端调试
                 print("Turn Angle: %f" % Deflection_Angle)
 
         # 当小车角度绝对值小于阈值
         if abs(Deflection_Angle) <= TRA_AngTH:
-            uart.write(Run)  # 通信 小车直行
+            uart.write("%f\n" % Deflection_Angle)  # 发送左转和角度信息
             print("Run")  # 用于程序终端调试
             print("Turn Angle: %f" % Deflection_Angle)

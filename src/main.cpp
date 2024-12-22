@@ -24,6 +24,7 @@
 /**********************************************************/
 PIDInstance pid;
 
+
 void setup()
 {
   servo_create(); //测试初始化舵机，抓取到物块
@@ -53,7 +54,9 @@ void cleanup()
 
 void loop() 
 {
-  double vx = 0.0, vy = 0.0, vz = 400.0;
+  double vx = 100.0, vy = 0.0, vz = 0.0;
+  vz=translate();
+
   // 驱动电机
   Drive_Motor(vx ,vy ,vz);
 

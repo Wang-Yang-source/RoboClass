@@ -1,8 +1,5 @@
 #include "chassis.h"
 
-// Function declaration
-void parseData(String data);
-
 char cmd_return_tmp[64];               // 电机
 Chassis_target chassis_target;
 PIDInstance PID_chassis_vz;
@@ -35,11 +32,6 @@ void chassis_Init(void)
   PID_init(&PID_chassis_vz,&pid_chassis_vz_config);
   PID_init(&PID_chassis_vy,&pid_chassis_vy_config);
   
-  if (Serial.available() > 0) {
-      String receivedData = Serial.readStringUntil('\n'); // 读取直到换行符的传入数据
-      parseData(receivedData); // 调用函数解析接收到的数据
-  }
-
 }
 
 // 驱动电机函数
