@@ -34,35 +34,28 @@ void chassis_Init(void)
   PID_init(&PID_chassis_vy,&pid_chassis_vy_config);
 }
 
-void Drive_Motor(float vx,float vy,float vz)
+// 驱动电机函数
+void Drive_Motor(float vx, float vy, float vz)
 {
-	chassis_target.chassis_left_down_speed = (vx+vy-vz*(Wheel_spacing+Wheel_axlespacing));
-	chassis_target.chassis_left_up_speed = (vx-vy-vz*(Wheel_spacing+Wheel_axlespacing));
-	chassis_target.chassis_right_up_speed = (vx+vy+vz*(Wheel_spacing+Wheel_axlespacing));
-	chassis_target.chassis_right_down_speed = (vx-vy+vz*(Wheel_spacing+Wheel_axlespacing));
-};
+  // 计算每个电机的速度
+  chassis_target.clds = (vx + vy - vz * (Wheel_spacing + Wheel_axlespacing));
+  chassis_target.clus = (vx - vy - vz * (Wheel_spacing + Wheel_axlespacing));
+  chassis_target.crus = (vx + vy + vz * (Wheel_spacing + Wheel_axlespacing));
+  chassis_target.crds = (vx - vy + vz * (Wheel_spacing + Wheel_axlespacing));
+}
 
-void chassis_transmit(float chassis_left_down_speed,float chassis_left_up_speed,float chassis_right_up_speed,float chassis_right_down_speed)
+void chassis_transmit(float clds,float clus,float crus,float crds)
 {
-  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 6, (int)(1500 + (round)(chassis_left_up_speed)), 0);  // 电机1前进
+  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 6, (int)(1500 + round(clus)), 0);  // 电机6前进
   Serial.println(cmd_return_tmp); 
 
-  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 7, (int)(1500 - (round)(chassis_right_up_speed)), 0);  // 电机2前进 
+  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 7, (int)(1500 - round(crus)), 0);  // 电机7前进 
   Serial.println(cmd_return_tmp);
 
-  int flag = 1;
-   if(chassis_left_down_speed >= 0)
-  {
-    flag = 1;
-  }
-    if(chassis_left_down_speed < 0)
-  {
-    flag = -1;
-  }
-  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 8, (int)(1500 + (round)(  flag*(abs(chassis_left_down_speed)+50) )  ), 0);  // 电机3前进 
+  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 8, (int)(1500 + round(clds)), 0);  // 电机8前进 
   Serial.println(cmd_return_tmp);
 
-  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 9, (int)(1500 - (round)(chassis_right_down_speed)), 0);  // 电机4前进
+  sprintf(cmd_return_tmp, "#%03dP%04dT%04d!", 9, (int)(1500 - round(crds)), 0);  // 电机9前进
   Serial.println(cmd_return_tmp);
 }
 
@@ -81,5 +74,5 @@ void Chassis_xunji_control(void)
   Drive_Motor(500, chassis_target.vy, 0);
   
   // 发送电机速度指令
-  chassis_transmit(chassis_target.chassis_left_down_speed, chassis_target.chassis_left_up_speed, chassis_target.chassis_right_up_speed, chassis_target.chassis_right_down_speed);
+  chassis_transmit(chassis_target.clds, chassis_target.clus, chassis_target.crus, chassis_target.crds);
 }
